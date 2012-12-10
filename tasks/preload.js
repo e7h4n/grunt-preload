@@ -18,7 +18,6 @@ module.exports = function (grunt) {
         var files = this.data.files;
 
         grunt.file.expandFiles(src + files).forEach(function (jsFile) {
-            console.log("jsFile:", jsFile);
             var modName = jsFile.replace(src, '').replace(/\.js$/, '');
             grunt.log.writeln('Preload ' + (modName + '.preload').cyan + ' created');
 
@@ -27,10 +26,10 @@ module.exports = function (grunt) {
                 preloads.push($1);
             });
 
-            var dirname = path.dirname(src + jsFile);
+            var dirname = path.dirname(jsFile);
 
             var preload = preloads.reduce(function (memo, preload) {
-                return memo + grunt.file.read(path.join(dirname, preload));
+                return memo + grunt.file.read(path.join(dirname, preload)) + ';';
             }, '');
             grunt.file.write(jsFile.replace(src, dest).replace(/\.js$/, '.preload.js'), preload);
         });
