@@ -9,6 +9,14 @@ module.exports = function (grunt) {
             tasks: 'test'
         },
 
+        copy: {
+            dist: {
+                files: {
+                    'test/dist/': 'test/src/**/*.js'
+                }
+            }
+        },
+
         jslint: {
             files: [
                 'lib/**/*.js',
@@ -37,9 +45,7 @@ module.exports = function (grunt) {
 
         preload: {
             test: {
-                src: 'test/src/',
-                dest: 'test/dist/',
-                files: '*.js'
+                files: 'test/dist/*.js'
             }
         },
 
@@ -57,6 +63,7 @@ module.exports = function (grunt) {
 
     grunt.loadTasks('tasks');
     grunt.loadNpmTasks('grunt-jslint');
+    grunt.loadNpmTasks('grunt-contrib-copy');
 
-    grunt.registerTask('test', 'preload server qunit');
+    grunt.registerTask('test', 'copy preload server qunit');
 };

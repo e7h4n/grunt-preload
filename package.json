@@ -30,7 +30,8 @@
 
     "devDependencies": {
         "grunt": "~0.3.17",
-        "grunt-jslint": "*"
+        "grunt-jslint": "*",
+        "grunt-contrib-copy": "*"
     },
 
     "keywords": ["gruntplugin"]

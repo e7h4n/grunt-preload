@@ -11,9 +11,7 @@ Install the module with: `npm install grunt-preload`
 grunt.initConfig({
     preload: {
         test: {
-            src: 'test/src/',
-            dest: 'test/dest/',
-            files: '*.js'
+            files: 'test/src/*.js'
         }
     }
 });
