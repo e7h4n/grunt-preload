@@ -2,7 +2,7 @@
 /*global test, ok*/
 
 /**
- * @preload preload/dummy.js
+ * @preload ./preload/dummy.js
  */
 
 test('preload', function () {

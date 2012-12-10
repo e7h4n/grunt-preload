@@ -27,8 +27,10 @@ module.exports = function (grunt) {
                 preloads.push($1);
             });
 
+            var dirname = path.dirname(src + jsFile);
+
             var preload = preloads.reduce(function (memo, preload) {
-                return memo + grunt.file.read(src + preload);
+                return memo + grunt.file.read(path.join(dirname, preload));
             }, '');
             grunt.file.write(jsFile.replace(src, dest).replace(/\.js$/, '.preload.js'), preload);
         });
