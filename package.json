@@ -1,0 +1,37 @@
+{
+    "name": "grunt-preload",
+    "description": "Make javascript support @preload tag to preload other files.",
+    "version": "0.1.0",
+    "homepage": "https://github.com/perfectworks/grunt-preload",
+
+    "author": {
+        "name": "PerfectWorks",
+        "email": "perfectworks@gmail.com",
+        "url": "http://lostjs.com"
+    },
+
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/perfectworks/grunt-preload.git"
+    },
+
+    "bugs": {
+        "url": "https://github.com/perfectworks/grunt-preload/issues"
+    },
+
+    "licenses": [{
+        "type": "MIT",
+        "url": "https://github.com/perfectworks/grunt-preload/blob/master/LICENSE-MIT"
+    }],
+
+    "engines": {
+        "node": ">= 0.6.0"
+    },
+
+    "devDependencies": {
+        "grunt": "~0.3.17",
+        "grunt-jslint": "*"
+    },
+
+    "keywords": ["gruntplugin"]
+}
