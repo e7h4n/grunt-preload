@@ -44,8 +44,18 @@ module.exports = function (grunt) {
         },
 
         preload: {
+            testMap: {
+                sourceMap: {
+                    sourceRoot: '/src/'
+                },
+                src: 'test/src/',
+                dest: 'test/dist/',
+                files: '*.js'
+            },
             test: {
-                files: 'test/dist/*.js'
+                src: 'test/src/',
+                dest: 'test/dist/',
+                files: '*.js'
             }
         },
 
