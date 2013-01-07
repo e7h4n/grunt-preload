@@ -75,5 +75,5 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-jslint');
     grunt.loadNpmTasks('grunt-contrib-copy');
 
-    grunt.registerTask('test', 'copy preload server qunit');
+    grunt.registerTask('test', 'copy preload:testMap server qunit');
 };

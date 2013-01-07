@@ -11,7 +11,7 @@
 module.exports = function (grunt) {
     var path = require('path');
     var _ = require('underscore');
-    var UglifyJS = require('uglify-js');
+    var SourceMap = require('source-map');
 
     grunt.registerMultiTask('preload', 'Preload js files to fileName.preload.js', function () {
         var src = this.data.src || '';
@@ -27,28 +27,45 @@ module.exports = function (grunt) {
                 preloads.push($1);
             });
 
-            var dirname = path.dirname(jsFile);
-            preloads = preloads.map(function (preload) {
-                return path.join(dirname, preload);
-            });
-
-            var options = {
-                compress: false
-            };
+            var generator = null;
             if (sourceMapOptions) {
-                options.outSourceMap = path.basename(jsFile).replace(/\.js$/, '.preload.js');
-                options.sourceRoot = sourceMapOptions.sourceRoot;
+                generator = new SourceMap.SourceMapGenerator({
+                    file: modName + '.preload.js',
+                    sourceRoot: sourceMapOptions.sourceRoot
+                });
             }
 
-            var result = UglifyJS.minify(preloads, options);
-            var code = result.code;
+            var lineCount = 0;
+            var dirname = path.dirname(jsFile);
+            var code = preloads.reduce(function (memo, preload) {
+                var fullPath = path.join(dirname, preload);
+                var content = grunt.file.read(fullPath).replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+
+                if (generator) {
+                    var i = 0;
+                    var length = content.split('\n').length;
+                    for (i = 0; i < length; i++) {
+                        generator.addMapping({
+                            generated: {
+                                line: lineCount + i + 1,
+                                column: 0
+                            },
+                            original: {
+                                line: i + 1,
+                                column: 0
+                            },
+                            source: fullPath.replace(src, '')
+                        });
+                    }
+
+                    lineCount += length;
+                }
+
+                return memo + content;
+            }, '');
 
             if (sourceMapOptions) {
-                var map = JSON.parse(result.map);
-                map.sources = map.sources.map(function (source) {
-                    return source.replace(src, '');
-                });
-                grunt.file.write(jsFile.replace(src, dest).replace(/\.js$/, '.preload.js.map'), JSON.stringify(map));
+                grunt.file.write(jsFile.replace(src, dest).replace(/\.js$/, '.preload.js.map'), generator.toString());
 
                 code += '\n//@ sourceMappingURL=' + modName + '.preload.js.map';
             }

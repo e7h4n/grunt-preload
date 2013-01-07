@@ -30,6 +30,7 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 
 ## Release History
 
+`0.1.4` 2013-01-05 Use `source-map` to generated source map instead `UglifyJS`.
 `0.1.3` 2013-01-05 Add source map support.
 `0.1.2` 2012-12-26 Fix: missing dependency `underscore`.
 `0.1.0` 2012-12-10 First release.
