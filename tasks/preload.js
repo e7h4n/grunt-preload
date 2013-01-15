@@ -61,7 +61,7 @@ module.exports = function (grunt) {
                     lineCount += length;
                 }
 
-                return memo + content;
+                return memo + ';' + content;
             }, '');
 
             if (sourceMapOptions) {

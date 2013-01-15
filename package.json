@@ -1,7 +1,7 @@
 {
     "name": "grunt-preload",
     "description": "Make javascript support @preload tag to preload other files.",
-    "version": "0.1.4",
+    "version": "0.1.5",
     "homepage": "https://github.com/perfectworks/grunt-preload",
 
     "author": {
