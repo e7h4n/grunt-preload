@@ -13,24 +13,14 @@ module.exports = function (grunt) {
     var _ = require('underscore');
     var SourceMap = require('source-map');
 
-    function expandFiles(param) {
-        if (grunt.file.expand) {
-            return grunt.file.expand({
-                filter: 'isFile'
-            }, param);
-        }
-
-        return grunt.file.expandFiles(param);
-    }
-
     grunt.registerMultiTask('preload', 'Preload js files to fileName.preload.js', function () {
-        var src = this.data.src || '';
-        var dest = this.data.dest || '';
-        var files = this.data.files;
-        var sourceMapOptions = this.data.sourceMap;
+        var options = this.options();
+        var sourceMapOptions = options.sourceMap;
 
-        expandFiles(src + files).forEach(function (jsFile) {
-            var modName = jsFile.replace(src, '').replace(/\.js$/, '');
+        console.log("this.files[0].src:", this.files[0].src);
+        this.files.forEach(function (file) {
+            var jsFile = file.src[0];
+            var modName = jsFile.replace(file.orig.cwd, '').replace(/\.js$/, '');
 
             var preloads = [];
             grunt.file.read(jsFile).replace(/^(?:\s*\*\s*@preload\s+)([0-9\-\.a-zA-Z\/]+)(?:\s*)$/gm, function ($0, $1) {
@@ -40,7 +30,7 @@ module.exports = function (grunt) {
             var generator = null;
             if (sourceMapOptions) {
                 generator = new SourceMap.SourceMapGenerator({
-                    file: modName + '.preload.js',
+                    file: modName + file.orig.ext,
                     sourceRoot: sourceMapOptions.sourceRoot
                 });
             }
@@ -64,7 +54,7 @@ module.exports = function (grunt) {
                                 line: i + 1,
                                 column: 0
                             },
-                            source: fullPath.replace(src, '')
+                            source: fullPath.replace(file.orig.cwd, '')
                         });
                     }
 
@@ -75,13 +65,13 @@ module.exports = function (grunt) {
             }, '');
 
             if (sourceMapOptions) {
-                grunt.file.write(jsFile.replace(src, dest).replace(/\.js$/, '.preload.js.map'), generator.toString());
+                grunt.file.write(jsFile.replace(file.orig.cwd, file.orig.dest).replace(/\.js$/, file.orig.ext + '.map'), generator.toString());
 
-                code += '\n//@ sourceMappingURL=' + modName + '.preload.js.map';
+                code += '\n//@ sourceMappingURL=' + modName + file.orig.ext + '.map';
             }
 
-            grunt.file.write(jsFile.replace(src, dest).replace(/\.js$/, '.preload.js'), code);
-            grunt.log.writeln('Preload ' + (modName + '.preload').cyan + ' created');
+            grunt.file.write(file.dest, code);
+            grunt.log.writeln('Preload ' + jsFile.cyan + ' -> ' + file.dest.cyan);
         });
     });
 };
