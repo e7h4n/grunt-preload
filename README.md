@@ -30,6 +30,7 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 
 ## Release History
 
+`0.1.7` 2013-02-22 Support grunt 0.4.0.
 `0.1.5` 2013-01-15 Fix preload bug.
 `0.1.4` 2013-01-05 Use `source-map` to generated source map instead `UglifyJS`.
 `0.1.3` 2013-01-05 Add source map support.

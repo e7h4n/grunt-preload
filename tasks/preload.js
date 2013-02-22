@@ -13,13 +13,23 @@ module.exports = function (grunt) {
     var _ = require('underscore');
     var SourceMap = require('source-map');
 
+    function expandFiles(param) {
+        if (grunt.file.expand) {
+            return grunt.file.expand({
+                filter: 'isFile'
+            }, param);
+        }
+
+        return grunt.file.expandFiles(param);
+    }
+
     grunt.registerMultiTask('preload', 'Preload js files to fileName.preload.js', function () {
         var src = this.data.src || '';
         var dest = this.data.dest || '';
         var files = this.data.files;
         var sourceMapOptions = this.data.sourceMap;
 
-        grunt.file.expandFiles(src + files).forEach(function (jsFile) {
+        expandFiles(src + files).forEach(function (jsFile) {
             var modName = jsFile.replace(src, '').replace(/\.js$/, '');
 
             var preloads = [];
